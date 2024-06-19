@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit&display=swap');
+
+body {
+  font-family: 'Outfit', sans-serif;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Outfit', sans-serif;
+}
+
+.active {
+  background-color: #1A1A1A;
+  color: #fff !important;
+}
+
+
+button {
+  cursor: pointer;
+}
+
+.selectOtp {
+  width: 100%;
+}
+
+.css-m5hdmq-MuiInputBase-root-MuiInput-root-MuiSelect-root::after {
+  border-bottom: none !important;
+}
+
+.selectView {
+  width: 100%;
+  width: 200px;
+  height: 40px;
+}
+
+.SelectOrder {
+  width: 250px;
+ 
+}
+
+input[type="number"]::-webkit-inner-spin-button {
+  display: none;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+
+
+
+
