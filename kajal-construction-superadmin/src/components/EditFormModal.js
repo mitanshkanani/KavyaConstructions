@@ -226,7 +226,32 @@ const EditForm = ({
 
 export default EditFormModal;
 
+const Inputs = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 20px;
+  div {
+    flex-basis: 100%;
+  }
+  input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+    margin-bottom: 10px;
+  }
 
+  select {
+    border: none;
+    outline: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+`;
 
 const Box = styled.div`
   background-color: #fff;
@@ -269,29 +294,3 @@ const Wrapper = styled.div`
   }
 `;
 
-const Inputs = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  gap: 20px;
-  div {
-    flex-basis: 100%;
-  }
-  input {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    outline: none;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.42);
-    margin-bottom: 10px;
-  }
-
-  select {
-    border: none;
-    outline: none;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.42);
-    padding: 10px;
-    width: 100%;
-    margin-bottom: 10px;
-  }
-`;
