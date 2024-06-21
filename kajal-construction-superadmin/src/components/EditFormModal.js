@@ -84,10 +84,10 @@ const EditForm = ({
   };
 
   return (
-    <motion.div initial={{ opacity: 0, x: 100 }}
-    animate={{ opacity: 1, x: 0 }}
-    transition={{ delay: 1.5 }}>
+    <motion.div >
       <h2>Edit</h2>
+      <Inputs>
+      
       <form onSubmit={handleEditData}>
         <Container>
           <Wrapper>
@@ -211,17 +211,22 @@ const EditForm = ({
             />
           </Wrapper>
         </Container>
+        
         <div style={{ textAlign: "end" }}>
           <Button variant="contained" type="submit">
             Submit
           </Button>
         </div>
       </form>
+      </Inputs>
     </motion.div>
   );
 };
 
+
 export default EditFormModal;
+
+
 
 const Box = styled.div`
   background-color: #fff;
@@ -264,3 +269,29 @@ const Wrapper = styled.div`
   }
 `;
 
+const Inputs = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 20px;
+  div {
+    flex-basis: 100%;
+  }
+  input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+    margin-bottom: 10px;
+  }
+
+  select {
+    border: none;
+    outline: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+`;

@@ -97,11 +97,7 @@ const AddFormModal = ({ open, toggleModal }) => {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: 100 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: 0.5 }}
-    >
+    <motion.div>
       <Modal open={open} onClose={() => toggleModal()}>
         <Box sx={style}>
           <AddForm
@@ -148,11 +144,7 @@ const AddForm = ({
   };
 
   return (
-    <motion.div
-    initial={{ opacity: 0, x: 100 }}
-    animate={{ opacity: 1, x: 0 }}
-    transition={{ delay: 1.5 }}
-    >
+    <motion.div>
       <HeaderContainer>
         <h2>Add New Entry</h2>
         <IconButton onClick={() => toggleModal()}>
@@ -160,6 +152,8 @@ const AddForm = ({
         </IconButton>
       </HeaderContainer>
       <form onSubmit={handleAddData}>
+
+        <Inputs>
         <Container>
           <Wrapper>
             <label>Site Supervisor: </label>
@@ -286,6 +280,7 @@ const AddForm = ({
             />
           </Wrapper>
         </Container>
+        </Inputs>
         <div style={{ textAlign: "end" }}>
           <Button variant="contained" type="submit">
             Submit
@@ -309,6 +304,33 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+`;
+
+const Inputs = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 20px;
+  div {
+    flex-basis: 100%;
+  }
+  input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+    margin-bottom: 10px;
+  }
+
+  select {
+    border: none;
+    outline: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 10px;
+  }
 `;
 
 const Wrapper = styled.div`
@@ -344,3 +366,4 @@ const Box = styled.div`
   height: 95vh;
   overflow-y: auto;
 `;
+
