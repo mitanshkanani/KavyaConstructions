@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import db from "../../firebase";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { collection, limit, onSnapshot, orderBy, query, startAfter, getDocs, startAt } from "firebase/firestore";
 import ClearIcon from "@mui/icons-material/Clear";
 import Viewmore from "../Viewmore";
 
@@ -36,13 +36,39 @@ const Operations = () => {
   const [zoom, setZoom] = useState("");
   const [mediaDataType, setMediaDataType] = useState("");
 
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [lastVisible, setLastVisible] = useState(null);
+  const [pageCache, setPageCache] = useState([]);
+  const [totalDocuments, setTotalDocuments] = useState(0);
+
   const dispatch = useDispatch();
 
-  const getData = async () => {
-    const formRef = query(
-      collection(db, "FormData"),
-      orderBy("deliveryTime", "desc")
-    );
+  const getData = async (isNextPage) => {
+    const snapshot = await getDocs(collection(db, "FormData"));
+    setTotalDocuments(snapshot?.size)
+    let formRef;
+    if (isNextPage && lastVisible) {
+      formRef = query(
+        collection(db, "FormData"),
+        orderBy("deliveryTime", "desc"),
+        startAfter(lastVisible),
+        limit(rowsPerPage)
+      );
+    } else if (!isNextPage && page > 1) {
+      formRef = query(
+        collection(db, "FormData"),
+        orderBy("deliveryTime", "desc"),
+        limit(rowsPerPage),
+        startAt(pageCache[page - 1])
+      );
+    } else {
+      formRef = query(
+        collection(db, "FormData"),
+        orderBy("deliveryTime", "desc"),
+        limit(rowsPerPage)
+      );
+    }
 
     try {
       await onSnapshot(formRef, (querySnapshot) => {
@@ -50,8 +76,15 @@ const Operations = () => {
           id: doc.id,
           ...doc.data(),
         }));
+        console.log(data)
         setOperation(data);
         setFilteredData(data);
+        if (!querySnapshot.empty) {
+          const p = pageCache;
+          p[page + 1] = querySnapshot.docs[0];
+          setPageCache(p);
+          setLastVisible(querySnapshot.docs[querySnapshot.docs.length - 1]);
+        }
       });
     } catch (error) {
       console.log(error);
@@ -59,8 +92,25 @@ const Operations = () => {
   };
 
   useEffect(() => {
-    getData();
-  }, []);
+    getData(false);
+  }, [rowsPerPage]);
+
+  const handleChangePage = (event, newPage) => {
+    console.log("Hi", newPage, page)
+    if (newPage > page) {
+      getData(true);
+    } else {
+      getData(false);
+    }
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+    setLastVisible(null);
+    getData(false);
+  };
 
   useEffect(() => {
     const handlerESC = (event) => {
@@ -156,6 +206,11 @@ const Operations = () => {
           toggleEditDetailsModal={toggleEditDetailsModal}
           handlerDetails={handlerDetails}
           handlerDelete={handlerDelete}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          handleChangePage={handleChangePage}
+          handleChangeRowsPerPage={handleChangeRowsPerPage}
+          count={totalDocuments}
         />
       </SitePage>
       {modal === "open" ? (

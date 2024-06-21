@@ -19,7 +19,6 @@ import AddVendor from '../components/AddVendor';
 import Addmaterial from '../components/Addmaterial';
 
 import Navbar from '../components/Navbar';
-
 import Modal from '../components/Modal';
 
 const Master = () => {
@@ -160,9 +159,6 @@ align-items: center;
 justify-content: space-between;
 gap: 10px;
 `
-
-
-
 
 const Btns = styled.button`
 outline: none;

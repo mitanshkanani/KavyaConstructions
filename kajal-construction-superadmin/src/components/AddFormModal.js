@@ -1,5 +1,5 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
+// import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import { Button } from "@mui/material";
 import styled from "styled-components";
@@ -7,6 +7,7 @@ import { addFormData } from "../Backend/addDataToFirebase";
 import { toast } from "react-toastify";
 import ClearIcon from "@mui/icons-material/Clear";
 import IconButton from "@mui/material/IconButton";
+import { motion } from "framer-motion";
 import {
   getMaterials,
   getSites,
@@ -96,19 +97,25 @@ const AddFormModal = ({ open, toggleModal }) => {
   };
 
   return (
-    <Modal open={open} onClose={() => toggleModal()}>
-      <Box sx={style}>
-        <AddForm
-          handleChange={handleChange}
-          formData={formData}
-          toggleModal={toggleModal}
-          supervisors={supervisors}
-          vendors={vendors}
-          materials={materials}
-          sites={sites}
-        />
-      </Box>
-    </Modal>
+    <motion.div
+      initial={{ opacity: 0, x: 100 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: 0.5 }}
+    >
+      <Modal open={open} onClose={() => toggleModal()}>
+        <Box sx={style}>
+          <AddForm
+            handleChange={handleChange}
+            formData={formData}
+            toggleModal={toggleModal}
+            supervisors={supervisors}
+            vendors={vendors}
+            materials={materials}
+            sites={sites}
+          />
+        </Box>
+      </Modal>
+    </motion.div>
   );
 };
 
@@ -141,7 +148,11 @@ const AddForm = ({
   };
 
   return (
-    <div>
+    <motion.div
+    initial={{ opacity: 0, x: 100 }}
+    animate={{ opacity: 1, x: 0 }}
+    transition={{ delay: 1.5 }}
+    >
       <HeaderContainer>
         <h2>Add New Entry</h2>
         <IconButton onClick={() => toggleModal()}>
@@ -281,7 +292,7 @@ const AddForm = ({
           </Button>
         </div>
       </form>
-    </div>
+    </motion.div>
   );
 };
 
@@ -319,4 +330,17 @@ const Wrapper = styled.div`
     width: 50%;
     padding: 0px 5px;
   }
+`;
+
+const Box = styled.div`
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 600px;
+  margin-left: auto;
+  /* margin: 0 auto; */
+  margin-top: 20px;
+  height: 95vh;
+  overflow-y: auto;
 `;

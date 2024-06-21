@@ -8,25 +8,19 @@ import { addDoc, collection, serverTimestamp, getDoc, doc, updateDoc, getDocs } 
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
 import { storage } from "../firebase"
 import db from '../firebase';
-
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-
 import Loader from './Loader';
-
 
 const FormData = {
     name: "",
     SiteLocation: "",
     phoneNumber: "",
 }
-
 
 const bloodgrps = [
     "A+(A Positive)",
@@ -38,29 +32,19 @@ const bloodgrps = [
     "O+(O Positive)",
     "O-(O Negative)"
 ]
-
-
 const AddUser = ({ submitForm, show, editForm, handlEdit, formId }) => {
     const [materialForm, setMaterial] = useState(FormData)
     const [drag, setDrag] = useState()
     const [imgShared, setImgShared] = useState()
     const [allImg, setAllImg] = useState([])
     const [imgLinkLoc, setLinkLoc] = useState({})
-
     const [siteLocation, setLocation] = useState([])
-
     const [showField, setShowFields] = useState(false)
     const [fields, setFeilds] = useState({})
-
     const [fireImg, setFireImg] = useState('')
-
     const userRef = collection(db, "LoginPhones")
-
     const [usersList, setUsersList] = useState([])
     const [loading, setLoading] = useState(false)
-
-
-
     useEffect(() => {
         getmaterIalListRef()
     }, [show, formId])
@@ -76,26 +60,20 @@ const AddUser = ({ submitForm, show, editForm, handlEdit, formId }) => {
             console.log(err)
         }
     }
-
     console.log(usersList, "usernjedh")
-
     useEffect(() => {
         getLocations()
     }, [show, formId])
-
     const locationRef = collection(db, "SiteData")
     const getLocations = async () => {
         try {
             const docRef = await getDocs(locationRef)
             const docSnap = await docRef.docs.map(doc => ({ id: doc.id, ...doc.data() }))
             setLocation(docSnap)
-
         } catch (err) {
             console.log(err)
         }
     }
-
-
     const ClearForm = (e) => {
         e.preventDefault();
         setMaterial(FormData)
@@ -105,8 +83,6 @@ const AddUser = ({ submitForm, show, editForm, handlEdit, formId }) => {
         setDrag(null)
         setShowFields(false)
         setFeilds({})
-
-
         if (show === "adduser") {
             submitForm()
         }
@@ -114,7 +90,6 @@ const AddUser = ({ submitForm, show, editForm, handlEdit, formId }) => {
             handlEdit()
         }
     }
-
     const getData = async () => {
         try {
             const docRef = await doc(db, "LoginPhones", formId);
@@ -147,18 +122,10 @@ const AddUser = ({ submitForm, show, editForm, handlEdit, formId }) => {
             console.log(error)
         }
     }
-
-
-
     useEffect(() => {
         console.log("getData")
         getData()
     }, [formId])
-
-
-
-
-
     const handlerForm = (e) => {
         const { name, value } = e.target;
         if (name === "phoneNumber") {
@@ -755,9 +722,6 @@ const AddUser = ({ submitForm, show, editForm, handlEdit, formId }) => {
 }
 // #2F80ED
 
-
-
-
 const Btn = styled.button`
 display: flex;
 align-items: center;
@@ -775,8 +739,6 @@ font-weight: 530;
 letter-spacing: 1.5px;
 font-weight: 600;
 `
-
-
 
 const Container = styled.div`
 position: fixed;
@@ -829,7 +791,6 @@ cursor: pointer;
 padding: 5px;
 /* background-color: red; */
 `
-
 
 const Form = styled.div`
 padding: 20px;
@@ -991,8 +952,5 @@ display: flex;
 align-items: center;
 gap: 10px;
 `;
-
-
-
 
 export default AddUser

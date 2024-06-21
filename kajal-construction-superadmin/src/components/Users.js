@@ -12,14 +12,10 @@ import {collection, onSnapshot, deleteDoc, doc, getDocs, query, orderBy} from "f
 import { storage } from '../firebase';
 import Details from '../components/Details';
 import AddUser from '../components/AddUser';
-
-
-
 import {SetModal} from "../features/modalSlice"
 import {useDispatch} from "react-redux"
 import { useSelector } from 'react-redux';
 import {selectType} from "../features/modalSlice"
-
 import Modal from './Modal';
 
 const Users = () => {
@@ -73,24 +69,12 @@ const userRef = query(collection(db, "LoginPhones") , orderBy('timestamp', "desc
       }
 }, [])
 
-
-
 const [currentPage, setCurrentPage] = useState(1);
 const [postsPerPage, setPostsPerPage] = useState(5);
-
-
-
-
-
 
 const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const Posts = users.slice(indexOfFirstPost, indexOfLastPost);
-
-
-
-
-
 
   const prev = (arrLen) => {
     if(currentPage > 1){
@@ -99,7 +83,6 @@ const indexOfLastPost = currentPage * postsPerPage;
     }
   }
   
-  
   const next = (arrLen) => {
     if(currentPage < Math.ceil(users.length / postsPerPage)){
       setCurrentPage(currentPage + 1)
@@ -107,10 +90,6 @@ const indexOfLastPost = currentPage * postsPerPage;
     }
 
   }
-
-  
-
-
 
   const handlerForm = (e) => {
    console.log(e.target.value)
@@ -158,8 +137,6 @@ const indexOfLastPost = currentPage * postsPerPage;
       })
     )
   }
-
-
 
   const handlEdit = (formId) => {
     // setEdit("addsite")
@@ -286,10 +263,6 @@ const indexOfLastPost = currentPage * postsPerPage;
    </>
   )
 }
-
-
-
-
 
 const SitePage = styled.div`
 padding: 20px 10px;

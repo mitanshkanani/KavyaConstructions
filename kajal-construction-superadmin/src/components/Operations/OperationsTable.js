@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
@@ -25,19 +24,12 @@ const OperationsTable = ({
   toggleEditDetailsModal,
   handlerDetails,
   handlerDelete,
+  page,
+  rowsPerPage,
+  handleChangePage,
+  handleChangeRowsPerPage,
+  count
 }) => {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-
   const isUserSuperAdmin = isSuperAdmin();
 
   return (
@@ -60,98 +52,76 @@ const OperationsTable = ({
             </tr>
           </thead>
           <tbody>
-            {filteredData
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((item, index) => {
-                const totalCost =
-                  parseFloat(item?.price) * parseFloat(item?.quantity);
-                return (
-                  <tr key={index.toString()}>
-                    <td>{item?.unloadedAt}</td>
-                    <td>{item?.unloadedBy}</td>
-                    <td>{item?.materialType}</td>
-                    <td>{item?.vendorName}</td>
-                    <td>{item?.quantity}</td>
-                    <td>{Math.round(totalCost * 100) / 100}</td>
-                    <td>{formatDate(item?.deliveryTime)}</td>
-                    <td>
-                      {item?.capturedImage ? (
-                        <BgImg
-                          onClick={() =>
-                            handlerImg(item.capturedImage, "image")
-                          }
-                        >
-                          <img src={item?.capturedImage} alt="img1" />
-                        </BgImg>
-                      ) : (
-                        "No Image"
-                      )}
-                    </td>
-                    <td>
-                      {item.capturedVideo ? (
-                        <BgImg
-                          onClick={() =>
-                            handlerImg(item.capturedVideo, "video")
-                          }
-                        >
-                          <video>
-                            <source
-                              src={item?.capturedVideo}
-                              type="video/mp4"
-                            />
-                          </video>
-                          <Layer>
-                            <div>
-                              <PlayArrowIcon />
-                            </div>
-                          </Layer>
-                        </BgImg>
-                      ) : (
-                        "NA"
-                      )}
-                    </td>
-
-                    <td>
-                      {item?.capturedTruckImage ? (
-                        <BgImg
-                          onClick={() =>
-                            handlerImg(item.capturedTruckImage, "image")
-                          }
-                        >
-                          <img src={item?.capturedTruckImage} alt="img1" />
-                        </BgImg>
-                      ) : (
-                        "No Image"
-                      )}
-                    </td>
-                    <td>
-                      {isUserSuperAdmin && (
-                        <button onClick={() => toggleEditDetailsModal(item)}>
-                          <EditIcon />
-                        </button>
-                      )}
-                      <button onClick={() => handlerDetails(item.id)}>
-                        <VisibilityIcon />
+            {filteredData.map((item, index) => {
+              const totalCost = parseFloat(item?.price) * parseFloat(item?.quantity);
+              return (
+                <tr key={index.toString()}>
+                  <td>{item?.unloadedAt}</td>
+                  <td>{item?.unloadedBy}</td>
+                  <td>{item?.materialType}</td>
+                  <td>{item?.vendorName}</td>
+                  <td>{item?.quantity}</td>
+                  <td>{Math.round(totalCost * 100) / 100}</td>
+                  <td>{formatDate(item?.deliveryTime)}</td>
+                  <td>
+                    {item?.capturedImage ? (
+                      <BgImg onClick={() => handlerImg(item.capturedImage, "image")}>
+                        <img src={item?.capturedImage} alt="img1" />
+                      </BgImg>
+                    ) : (
+                      "No Image"
+                    )}
+                  </td>
+                  <td>
+                    {item.capturedVideo ? (
+                      <BgImg onClick={() => handlerImg(item.capturedVideo, "video")}>
+                        <video>
+                          <source src={item?.capturedVideo} type="video/mp4" />
+                        </video>
+                        <Layer>
+                          <div>
+                            <PlayArrowIcon />
+                          </div>
+                        </Layer>
+                      </BgImg>
+                    ) : (
+                      "NA"
+                    )}
+                  </td>
+                  <td>
+                    {item?.capturedTruckImage ? (
+                      <BgImg onClick={() => handlerImg(item.capturedTruckImage, "image")}>
+                        <img src={item?.capturedTruckImage} alt="img1" />
+                      </BgImg>
+                    ) : (
+                      "No Image"
+                    )}
+                  </td>
+                  <td>
+                    {isUserSuperAdmin && (
+                      <button onClick={() => toggleEditDetailsModal(item)}>
+                        <EditIcon />
                       </button>
-                      {isUserSuperAdmin && (
-                        <button
-                          style={{ color: "#F44336" }}
-                          onClick={() => handlerDelete(item.id)}
-                        >
-                          <DeleteOutlinedIcon />
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
+                    )}
+                    <button onClick={() => handlerDetails(item.id)}>
+                      <VisibilityIcon />
+                    </button>
+                    {isUserSuperAdmin && (
+                      <button style={{ color: "#F44336" }} onClick={() => handlerDelete(item.id)}>
+                        <DeleteOutlinedIcon />
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </Table>
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={filteredData.length}
+        count={count}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -168,8 +138,6 @@ const Table = styled.div`
   table {
     table-layout: fixed;
     width: 100%;
-    /* background-color: yellowgreen; */
-    /* border-collapse: collapse; */
   }
   th,
   td {
@@ -198,7 +166,6 @@ const Table = styled.div`
     color: #909090;
     svg {
       font-size: 18px;
-      /* color: #909090; */
     }
   }
 `;
@@ -248,7 +215,6 @@ const Layer = styled.div`
     justify-content: center;
     background: #d3e6f7;
     border: 1px solid #41a3fc;
-
     svg {
       color: #41a3fc;
     }

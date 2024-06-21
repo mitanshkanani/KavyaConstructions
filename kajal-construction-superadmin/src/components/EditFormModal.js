@@ -1,5 +1,6 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
+// import Box from "@mui/material/Box";
+import { motion } from "framer-motion";
 import Modal from "@mui/material/Modal";
 import { Button } from "@mui/material";
 import { updateFormData } from "../Backend/updateOperations";
@@ -83,7 +84,9 @@ const EditForm = ({
   };
 
   return (
-    <div>
+    <motion.div initial={{ opacity: 0, x: 100 }}
+    animate={{ opacity: 1, x: 0 }}
+    transition={{ delay: 1.5 }}>
       <h2>Edit</h2>
       <form onSubmit={handleEditData}>
         <Container>
@@ -214,11 +217,24 @@ const EditForm = ({
           </Button>
         </div>
       </form>
-    </div>
+    </motion.div>
   );
 };
 
 export default EditFormModal;
+
+const Box = styled.div`
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 600px;
+  margin-left: auto;
+  /* margin: 0 auto; */
+  margin-top: 20px;
+  height: 95vh;
+  overflow-y: auto;
+`;
 
 const Container = styled.div`
   margin: 10px 0px;
@@ -228,8 +244,13 @@ const Container = styled.div`
 `;
 
 const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+
   label {
     margin-right: 10px;
+    width: 140px;
+    display: block;
   }
   input {
     height: 30px;
@@ -242,3 +263,4 @@ const Wrapper = styled.div`
     padding: 0px 5px;
   }
 `;
+
